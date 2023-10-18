@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>toggle switch</title>
+    <style>
+        .switch{
+            position:relative;
+            display: inline-block;
+            width:60px;
+            height:34px;
+        }
+        .switch input{
+            display: none;
+        }
+
+        .slider{
+            background-color: red;
+            position:absolute;
+            cursor: pointer;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            border-radius: 34px;
+            transition:0.5s;
+        }
+        .slider:before{
+            height:26px;
+            width:26px;
+            background-color: white;
+            border-radius: 50%;
+            position:absolute;
+            content: "";
+            left:4px;
+            bottom:4px;
+            transition: 0.4s;
+        }
+
+        .switch input:checked + .slider{
+            background-color: #2196F3;
+          
+        }
+
+        .switch input:checked + .slider::before{
+            transform: translateX(30px); 
+        }
+    </style>
+</head>
+<body>
+    <label class="switch">
+        <input type="checkbox" name="" id="toggle">
+        <span class="slider"></span>
+    </label>
+    <p id="status">OFF</p>
+
+    <script>
+        const toggle = document.getElementById("toggle");
+        const status = document.getElementById("status")
+
+        toggle.addEventListener("change",function(){
+            if(this.checked){
+                status.textContent="ON";
+                document.body.style.backgroundColor="rgb(152, 249, 152";
+            }
+            else{
+                status.textContent="OFF";
+                document.body.style.backgroundColor="#e24e4e";
+            }
+        })
+    </script>
+</body>
+</html>
