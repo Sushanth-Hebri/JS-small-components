@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Compass</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(to top, #1a1a1a, #333);
+      color: white;
+    }
+    #compass {
+      width: 200px;
+      height: 200px;
+      margin: 2rem auto;
+      background: url('https://i.imgur.com/WP8t0oO.png') no-repeat center;
+      background-size: contain;
+      transform: rotate(0deg);
+      transition: transform 0.3s ease-out;
+    }
+    #heading {
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+    button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      margin-top: 2rem;
+      border: none;
+      background: #00b894;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Compass</h1>
+  <div id="compass"></div>
+  <div id="heading">Heading: 0°</div>
+  <button onclick="requestAccess()">Enable Compass</button>
+
+  <script>
+    let compass = document.getElementById("compass");
+    let headingText = document.getElementById("heading");
+
+    function handleOrientation(event) {
+      let alpha = event.alpha;
+
+      // iOS specific adjustment
+      if (event.webkitCompassHeading !== undefined) {
+        alpha = event.webkitCompassHeading;
+      }
+
+      // Rotate compass and update heading text
+      if (alpha != null) {
+        compass.style.transform = `rotate(${-alpha}deg)`;
+        headingText.textContent = `Heading: ${alpha.toFixed(0)}°`;
+      }
+    }
+
+    function requestAccess() {
+      // For iOS 13+ permission
+      if (typeof DeviceOrientationEvent !== "undefined" &&
+          typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === "granted") {
+              window.addEventListener("deviceorientation", handleOrientation, true);
+            } else {
+              alert("Permission denied");
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Normal flow (Android and older iOS)
+        window.addEventListener("deviceorientation", handleOrientation, true);
+      }
+    }
+  </script>
+</body>
+</html>
